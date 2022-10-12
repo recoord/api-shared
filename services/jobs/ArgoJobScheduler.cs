@@ -47,7 +47,10 @@ public class ArgoJobScheduler
             JobSystemArgs = new JobSystemArgsV1
             {
                 additionalJSON = JsonSerializer.Deserialize<Dictionary<string, object>>(args) ?? new Dictionary<string, object>()
-            }
+            },
+            Tags = jobCreateRequest.Tags,
+            Notifications = jobCreateRequest.Notifications,
+            Synchronized = jobCreateRequest.Synchronized
         };
         var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
 
