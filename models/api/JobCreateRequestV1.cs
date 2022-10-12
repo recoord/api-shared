@@ -19,6 +19,9 @@ public record JobCreateRequestV1
     [Range(0.1, 60 * 24, ErrorMessage = "Job timeout must be between {1} and {2}.")]
     public double JobTimeoutMinutes { get; init; } = 60 * 24;
 
+    [SwaggerSchemaExample("stackedRendering")]
+    public string JobKind { get; init; } = "";
+
     public SystemAuthV1? SystemAuth { get; init; }
 
     public JobSystemArgsV1? JobSystemArgs { get; init; }
