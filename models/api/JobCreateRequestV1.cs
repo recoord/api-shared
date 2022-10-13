@@ -20,7 +20,7 @@ public record JobCreateRequestV1
     public double JobTimeoutMinutes { get; init; } = 60 * 24;
 
     [SwaggerSchemaExample("stackedRendering")]
-    public string JobKind { get; init; } = "";
+    public string JobKind { get; init; } = "noKind";
 
     public SystemAuthV1? SystemAuth { get; init; }
 
