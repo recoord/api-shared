@@ -11,7 +11,7 @@ public class MetricHostedService : IHostedService
     public MetricHostedService(ILogger<MetricHostedService> logger)
     {
         _logger = logger;
-        Host = Environment.GetEnvironmentVariable("METRIC_SERVER_HOST") ?? "localhost";
+        Host = Environment.GetEnvironmentVariable("METRIC_SERVER_HOST") ?? "0.0.0.0";
         Port = int.Parse(Environment.GetEnvironmentVariable("METRIC_SERVER_PORT") ?? "8080");
     }
 
