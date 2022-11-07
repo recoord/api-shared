@@ -16,5 +16,5 @@ public record RecordingEnrichmentAddRequestV1
 
     [Required]
     [MinLength(1, ErrorMessage = "Url for recording enrichment")]
-    public string Url { get; init; } = "";
+    public string Url { get; set; } = "";
 }
