@@ -22,7 +22,7 @@ public record JobCreateRequestV1
     [SwaggerSchemaExample("stackedRendering")]
     public string JobKind { get; init; } = "noKind";
 
-    public SystemAuthV1? SystemAuth { get; init; }
+    //public SystemAuthV1? SystemAuth { get; init; }
 
     public JobSystemArgsV1? JobSystemArgs { get; init; }
 
