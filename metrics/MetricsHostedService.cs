@@ -20,7 +20,6 @@ public class MetricHostedService : IHostedService
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation($"Starting metric server on {Host}:{Port}");
-        //_logger.Info($"Starting metric server on {Host}:{Port}");
 
         _metricServer = new KestrelMetricServer(Host, Port).Start();
 
