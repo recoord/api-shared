@@ -13,5 +13,6 @@ public enum JobStateV1
     Aborted = 3,
     Failed = 4,
     Completed = 5,
-    TimedOut = 6
+    TimedOut = 6,
+    NoSignal = 7
 }
