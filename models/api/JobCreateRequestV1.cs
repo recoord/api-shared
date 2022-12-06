@@ -16,7 +16,7 @@ public record JobCreateRequestV1
     [SwaggerSchemaExample("/workflows/processing-argo/{0}/stop")]
     public string JobSystemAbortUrlPath { get; init; } = "";
 
-    [Range(0.1, 60 * 24, ErrorMessage = "Job timeout must be between {1} and {2}.")]
+    [Range(2, 60 * 24, ErrorMessage = "Job timeout must be between {1} and {2}.")]
     public double JobTimeoutMinutes { get; init; } = 60 * 24;
 
     [SwaggerSchemaExample("stackedRendering")]
