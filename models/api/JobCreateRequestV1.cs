@@ -10,7 +10,7 @@ public record JobCreateRequestV1
     public string JobSystemKind { get; init; } = "";
 
     [Required]
-    [SwaggerSchemaExample("/workflows/processing-argo/submit")]
+    [SwaggerSchemaExample("https://argowf.dev.core.veo.co/api/v1/workflows/processing-argo/submit")]
     public string JobSystemCreateUrlPath { get; init; } = "";
 
     // [SwaggerSchemaExample("/workflows/processing-argo/{0}/stop")]
