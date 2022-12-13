@@ -17,4 +17,6 @@ public record JobStateNotificationV1
     [SwaggerSchemaExample("2022-08-10T14:14:41Z")]
     [Required]
     public DateTime StateChangedAt { get; init; }
+
+    public int ExitCode { get; init; }
 }
