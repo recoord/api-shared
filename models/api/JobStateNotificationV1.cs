@@ -13,6 +13,9 @@ public record JobStateNotificationV1
     [ValidEnum(AllowZeroValues = false)]
     public JobStateV1 JobState { get; init; }
 
+    [Required]
+    public string JobKind { get; init; } = "noKind";
+
     [SwaggerSchema(Description = "Timestamp in UTC format where job state changed happened in jobs service")]
     [SwaggerSchemaExample("2022-08-10T14:14:41Z")]
     [Required]
