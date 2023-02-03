@@ -2,6 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // Summary:
 //  This catches an exception bobbling from a request call.
@@ -12,12 +13,14 @@ public class ErrorHandlerMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IErrorHandlerProblemDetailsCustomizer? _problemDetailsCustomizer;
+    private readonly ILogger _logger;
 
-    public ErrorHandlerMiddleware(RequestDelegate next, 
+    public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger,
         IErrorHandlerProblemDetailsCustomizer? problemDetailsCustomizer = null)
     {
         _next = next;
         _problemDetailsCustomizer = problemDetailsCustomizer;
+        _logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -31,7 +34,7 @@ public class ErrorHandlerMiddleware
             var response = context.Response;
 
             // Setup defaults for ProblemDetails
-            var contentType =  DeriveContentType(exception);
+            var contentType = DeriveContentType(exception);
             var statusCode = DeriveStatusCode(exception);
             var problemDetails = new ProblemDetails()
             {
@@ -42,11 +45,11 @@ public class ErrorHandlerMiddleware
 
             // Call potential customizer
             var responseProblemDetails = problemDetails;
-            if(_problemDetailsCustomizer != null)
+            if (_problemDetailsCustomizer != null)
             {
                 var problemDetailsReturned = _problemDetailsCustomizer.CustomizeProblemDetails(exception, responseProblemDetails);
                 // If return object is usable then do so, otherwise stick with byRef argument
-                if(problemDetailsReturned != null)
+                if (problemDetailsReturned != null)
                     responseProblemDetails = problemDetailsReturned;
             }
 
@@ -57,12 +60,13 @@ public class ErrorHandlerMiddleware
             {
                 response.StatusCode = (int)statusCode;
                 // Use possible override
-                if(responseProblemDetails.Status.HasValue)
+                if (responseProblemDetails.Status.HasValue)
                     response.StatusCode = responseProblemDetails.Status.Value;
             }
 
             // Serialize return object into response body
             var responseBody = JsonSerializer.Serialize(responseProblemDetails, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            _logger.LogInformation($"responseBody={responseBody}");
 
             await response.WriteAsync(responseBody);
         }
@@ -78,10 +82,10 @@ public class ErrorHandlerMiddleware
     {
         var statusCode = HttpStatusCode.InternalServerError;
 
-        if(exception.GetType() == typeof(HttpRequestException))
+        if (exception.GetType() == typeof(HttpRequestException))
         {
             HttpRequestException? ex = exception as HttpRequestException;
-            if(ex != null && ex.StatusCode.HasValue)
+            if (ex != null && ex.StatusCode.HasValue)
                 statusCode = ex.StatusCode.Value;
         }
 
