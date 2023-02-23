@@ -12,7 +12,7 @@ public class TestJobScheduler : IJobScheduler
     public TestJobScheduler(HttpClient httpClient, IAmazonSQS sqs)
     {
         _httpClient = httpClient;
-        _sqsQueueUrl = Environment.GetEnvironmentVariable("STACKED_RENDERING_SQS_URL") ?? "http://localhost:4566/000000000000/StackedRenderingLocalStack-Test-sqs";
+        _sqsQueueUrl = Environment.GetEnvironmentVariable("TEST_SQS_URL")!;
         _sqsClient = sqs;
     }
     public async Task<JobCreateResponseV1> JobCreateAsync(Guid recordingId, ArgoJobCreateRequestV1 jobCreateRequest, string jobKind)
