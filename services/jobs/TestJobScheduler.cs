@@ -5,19 +5,17 @@ using Amazon.SQS.Model;
 
 public class TestJobScheduler : IJobScheduler
 {
-    private readonly ILogger _logger;
     private readonly HttpClient _httpClient;
     private readonly string _sqsQueueUrl;
     private readonly IAmazonSQS _sqsClient;
 
-    public TestJobScheduler(ILogger<TestJobScheduler> logger, HttpClient httpClient, IAmazonSQS sqs)
+    public TestJobScheduler(HttpClient httpClient, IAmazonSQS sqs)
     {
-        _logger = logger;
         _httpClient = httpClient;
         _sqsQueueUrl = Environment.GetEnvironmentVariable("STACKED_RENDERING_SQS_URL") ?? "http://localhost:4566/000000000000/StackedRenderingLocalStack-Test-sqs";
         _sqsClient = sqs;
     }
-    public async Task<JobCreateResponseV1> JobCreateAsync(Guid recordingId, ArgoJobCreateRequestV1 jobCreateRequest)
+    public async Task<JobCreateResponseV1> JobCreateAsync(Guid recordingId, ArgoJobCreateRequestV1 jobCreateRequest, string jobKind)
     {
         await Task.Delay(TimeSpan.FromSeconds(1));
 
