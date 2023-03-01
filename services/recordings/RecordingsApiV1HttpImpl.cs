@@ -23,8 +23,7 @@ public class RecordingsApiV1HttpImpl : IRecordingsApiV1
 
     public async Task<RecordingGetResponseV1> RecordingGet(RecordingGetRequestV1 recordingGetRequest)
     {
-        var data = new StringContent(JsonSerializer.Serialize(recordingGetRequest), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync((string?)null, data);
+        var response = await _httpClient.GetAsync($"{recordingGetRequest.RecordingId}");
         var result = response.Content.ReadAsStringAsync().Result;
 
         if (response?.StatusCode == HttpStatusCode.OK)
@@ -33,7 +32,7 @@ public class RecordingsApiV1HttpImpl : IRecordingsApiV1
         }
         else
         {
-            throw new InvalidOperationException($"{recordingGetRequest.RecordingId}: {result}");
+            throw new InvalidOperationException($"Error getting recording for {nameof(recordingGetRequest.RecordingId)}={recordingGetRequest.RecordingId}");
         }
     }
 }
