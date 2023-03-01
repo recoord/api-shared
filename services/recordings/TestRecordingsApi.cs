@@ -1,5 +1,9 @@
-public class TestsRecordingsApi : IRecordingsApiV1
+public class TestRecordingsApi : IRecordingsApiV1
 {
+    public TestRecordingsApi(HttpClient httpClient)
+    {
+    }
+
     public async Task<RecordingGetResponseV1> RecordingGet(RecordingGetRequestV1 recordingGetRequest)
     {
         await Task.CompletedTask;
