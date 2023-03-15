@@ -7,9 +7,8 @@ public record RecordingV1
     [SwaggerSchemaExample("5ddf4520-2472-4666-973e-9a691850152a")]
     public Guid RecordingId { get; init; }
 
-    [SwaggerSchema(Description = "Id of the camera that uploaded this recording")]
-    [SwaggerSchemaExample("5ddf4520-2472-4666-973e-9a691850152a")]
-    public Guid? CameraId { get; init; }
+    [SwaggerSchema(Description = "Context of the recording in key-value pairs")]
+    public Dictionary<string, string> Context { get; init; } = new Dictionary<string, string>();
 
     [SwaggerSchema(Description = "S3 uri for video.ts file")]
     [SwaggerSchemaExample("s3://veo-stag-content/7848738c-2e16-4220-b0d8-43257f8dea38/video.ts")]
