@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 //  If an exception is caught it is turned into a ProblemDetail object that is serialized into a json reponse.
 //  ProblemDetail is "A machine-readable format for specifying errors in HTTP API responses based on https://tools.ietf.org/html/rfc7807".
 //  The ProblemDetail content can be cusomized, if needed, by registering an IErrorHandlerResponseObjectCustomizer implementation in the 'Services' IoC container.
+[ExcludeFromCodeCoverage]
 public class ErrorHandlerMiddleware
 {
     private readonly RequestDelegate _next;
