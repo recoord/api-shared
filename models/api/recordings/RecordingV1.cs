@@ -33,4 +33,8 @@ public record RecordingV1
     [SwaggerSchema(Description = "Object url for camera alignment file")]
     [SwaggerSchemaExample("https://veo-stag-content.s3.eu-west-1.amazonaws.com/7848738c-2e16-4220-b0d8-43257f8dea38/camera_alignment.veo")]
     public string? CameraAlignmentUrl { get; init; }
+
+    [SwaggerSchema(Description = "Sport type of recording")]
+    [SwaggerSchemaExample("football")]
+    public string SportType { get; init; }
 }
