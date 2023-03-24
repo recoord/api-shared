@@ -36,5 +36,5 @@ public record RecordingV1
 
     [SwaggerSchema(Description = "Sport type of recording")]
     [SwaggerSchemaExample("football")]
-    public string SportType { get; init; } = "undefined";
+    public int Sport { get; init; }
 }
