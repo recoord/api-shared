@@ -35,6 +35,5 @@ public record RecordingV1
     public string? CameraAlignmentUrl { get; init; }
 
     [SwaggerSchema(Description = "Sport type of recording")]
-    [SwaggerSchemaExample("football")]
-    public int Sport { get; init; }
+    public SportV1 Sport { get; init; }
 }
