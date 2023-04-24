@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Prometheus;
 
 public static class MetricsDependecyInjection
 {
@@ -6,6 +7,7 @@ public static class MetricsDependecyInjection
     {
         if (startHostedService == false) { return; }
 
+        Metrics.DefaultFactory.ExemplarBehavior = ExemplarBehavior.NoExemplars();
         services.AddHostedService<MetricHostedService>();
     }
 }
