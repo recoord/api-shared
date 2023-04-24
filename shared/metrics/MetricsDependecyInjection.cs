@@ -7,7 +7,9 @@ public static class MetricsDependecyInjection
     {
         if (startHostedService == false) { return; }
 
+        // Need to disable exemplars to work with grafana for now
         Metrics.DefaultFactory.ExemplarBehavior = ExemplarBehavior.NoExemplars();
+
         services.AddHostedService<MetricHostedService>();
     }
 }
