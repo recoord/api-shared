@@ -4,6 +4,7 @@ public static class EventBridgeConstants
     public static readonly string DetailTypeRecordingUploaded = "recording-uploaded";
     public static readonly string DetailTypeJobStateChanged = "job-state-changed";
     public static readonly string DetailTypeS3ObjectCreated = "Object Created";
+    public static readonly string DetailTypeS3ObjectStorageClassChanged = "Object Storage Class Changed";
     public static readonly string DetailTypeRecordingUpdated = "recording-updated";
     #endregion // Detail types
 
