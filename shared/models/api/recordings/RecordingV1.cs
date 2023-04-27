@@ -36,4 +36,7 @@ public record RecordingV1
 
     [SwaggerSchema(Description = "Sport type of recording")]
     public SportV1 Sport { get; init; }
+
+    [SwaggerSchema(Description = "Is video.ts file archived or not")]
+    public bool IsVideoTsArchived { get; set; }
 }
