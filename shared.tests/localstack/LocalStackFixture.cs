@@ -4,11 +4,11 @@ using Xunit;
 
 public class LocalStackFixture : IAsyncLifetime
 {
-    private readonly TestcontainersContainer _localStackContainer;
+    private readonly IContainer _localStackContainer;
 
     public LocalStackFixture()
     {
-        var localStackBuilder = new TestcontainersBuilder<TestcontainersContainer>()
+        var localStackBuilder = new ContainerBuilder()
             .WithImage("localstack/localstack")
             .WithCleanUp(true)
             .WithEnvironment("DEFAULT_REGION", "eu-west-1")
