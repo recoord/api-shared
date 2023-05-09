@@ -1,4 +1,4 @@
-public static class DateTimeExtenstions
+public static class DateTimeExtensions
 {
     public static string ToUniversalIso8601(this DateTime dateTime)
     {
