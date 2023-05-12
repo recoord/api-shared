@@ -31,4 +31,6 @@ public record JobCreateRequestV1
     public NotificationV1? Notifications { get; init; }
 
     public SynchronizedV1? Synchronized { get; init; }
+
+    public AwsCredentialsV1? AwsCredentials { get; init; }
 }

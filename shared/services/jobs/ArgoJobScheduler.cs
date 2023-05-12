@@ -56,7 +56,8 @@ public class ArgoJobScheduler : IJobScheduler
             SystemAuth = new SystemAuthV1
             {
                 Token = _argoToken
-            }
+            },
+            AwsCredentials = jobCreateRequest.AwsCredentials
         };
         var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
 
