@@ -10,6 +10,7 @@
             ],
             "minimumReleaseAge": "1 day",
             "automerge": true,
+            "ignoreTests": true,
             "matchCurrentVersion": "!/^0/"
         }
     ]
