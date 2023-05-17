@@ -26,7 +26,7 @@ public class RecordingsApiV1HttpImpl : IRecordingsApiV1
         var response = await _httpClient.GetAsync($"{recordingGetRequest.RecordingId}");
         var result = response.Content.ReadAsStringAsync().Result;
 
-        if (response?.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode.IsSuccessStatusCode())
         {
             return JsonSerializer.Deserialize<RecordingGetResponseV1>(result, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
         }

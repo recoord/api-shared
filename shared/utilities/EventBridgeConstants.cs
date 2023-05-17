@@ -6,6 +6,7 @@ public static class EventBridgeConstants
     public static readonly string DetailTypeS3ObjectCreated = "Object Created";
     public static readonly string DetailTypeS3ObjectStorageClassChanged = "Object Storage Class Changed";
     public static readonly string DetailTypeRecordingUpdated = "recording-updated";
+    public static readonly string DetailTypeJobSystemCreateRetry = "job-system-create-retry";
     #endregion // Detail types
 
     #region Event source

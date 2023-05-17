@@ -9,12 +9,13 @@ public class ArgoJobScheduler : IJobScheduler
     private readonly HttpClient _httpClient;
     private readonly string _argoSubmitUrl;
     private readonly string _argoToken;
+    private readonly Uri _jobsApiUrl;
 
     public ArgoJobScheduler(HttpClient httpClient)
     {
         _httpClient = httpClient;
         var url = Environment.GetEnvironmentVariable("JOBS_API_URL") ?? "https://localhost:7141/jobs/v1";
-        _httpClient.BaseAddress = new Uri(url);
+        _jobsApiUrl = new Uri(url);
         _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
         var username = Environment.GetEnvironmentVariable("API_USERNAME")!;
         var password = Environment.GetEnvironmentVariable("API_PASSWORD")!;
@@ -59,12 +60,12 @@ public class ArgoJobScheduler : IJobScheduler
             },
             AwsCredentials = jobCreateRequest.AwsCredentials
         };
-        var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync((string?)null, data);
+        var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync(_jobsApiUrl, data);
         var result = response.Content.ReadAsStringAsync().Result;
 
-        if (response?.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode.IsSuccessStatusCode())
         {
             return JsonSerializer.Deserialize<JobCreateResponseV1>(result, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
         }
