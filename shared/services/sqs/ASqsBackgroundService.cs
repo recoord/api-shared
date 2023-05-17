@@ -55,13 +55,12 @@ public abstract class ASqsBackgroundService : BackgroundService
                     {
                         _logger.LogInformation(message.Body);
                         messageReceiptHandle = message.ReceiptHandle;
-                        int.TryParse(message.Attributes.GetValueOrDefault("ApproximateReceiveCount", "1"), out int previousDeliveries);
 
-                        var response = await this.HandleMessageAsync(message, previousDeliveries);
+                        var response = await this.HandleMessageAsync(message);
 
-                        if (response == ESqsMessageHandlerResponse.Retry)
+                        if (response.Result == ESqsMessageHandlerResult.Retry)
                         {
-                            int waitTime = _queueTtl + 5 * (previousDeliveries - 1);
+                            int waitTime = _queueTtl + 5 * (response.Retries - 1);
                             await _sqs.ChangeMessageVisibilityAsync(_sqsQueueUrl, message.ReceiptHandle, waitTime);
                             _logger.LogWarning($"Will retry the message again in {waitTime} seconds. Moving to the next message.");
 
@@ -97,7 +96,7 @@ public abstract class ASqsBackgroundService : BackgroundService
         }
     }
 
-    protected abstract Task<ESqsMessageHandlerResponse> HandleMessageAsync(Message message, int previousDeliveries);
+    protected abstract Task<SqsMessageHandlerResponse> HandleMessageAsync(Message message);
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
