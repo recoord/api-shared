@@ -15,7 +15,7 @@ public class TestJobScheduler : IJobScheduler
         _sqsQueueUrl = Environment.GetEnvironmentVariable("TEST_SQS_URL")!;
         _sqsClient = sqs;
     }
-    public async Task<JobCreateResponseV1> JobCreateAsync(Guid recordingId, ArgoJobCreateRequestV1 jobCreateRequest, string jobKind)
+    public async Task<JobCreateResponseV1> JobCreateAsync(ArgoJobCreateRequestV1 jobCreateRequest, string jobKind)
     {
         await Task.Delay(TimeSpan.FromSeconds(1));
 

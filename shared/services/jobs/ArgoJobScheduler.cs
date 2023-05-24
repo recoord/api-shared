@@ -9,12 +9,13 @@ public class ArgoJobScheduler : IJobScheduler
     private readonly HttpClient _httpClient;
     private readonly string _argoSubmitUrl;
     private readonly string _argoToken;
+    private readonly Uri _url;
 
     public ArgoJobScheduler(HttpClient httpClient)
     {
         _httpClient = httpClient;
         var url = Environment.GetEnvironmentVariable("JOBS_API_URL") ?? "https://localhost:7141/jobs/v1";
-        _httpClient.BaseAddress = new Uri(url);
+        _url = new Uri(url);
         _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
         var username = Environment.GetEnvironmentVariable("API_USERNAME")!;
         var password = Environment.GetEnvironmentVariable("API_PASSWORD")!;
@@ -26,7 +27,7 @@ public class ArgoJobScheduler : IJobScheduler
         _argoToken = Environment.GetEnvironmentVariable("ARGO_TOKEN")!;
     }
 
-    public async Task<JobCreateResponseV1> JobCreateAsync(Guid recordingId, ArgoJobCreateRequestV1 jobCreateRequest, string jobKind)
+    public async Task<JobCreateResponseV1> JobCreateAsync(ArgoJobCreateRequestV1 jobCreateRequest, string jobKind)
     {
         var argoArgs = new ArgoWorkflowArgsV1
         {
@@ -61,7 +62,7 @@ public class ArgoJobScheduler : IJobScheduler
         };
         var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync((string?)null, data);
+        var response = await _httpClient.PostAsync(_url, data);
         var result = response.Content.ReadAsStringAsync().Result;
 
         if (response?.StatusCode == HttpStatusCode.OK)
@@ -70,7 +71,7 @@ public class ArgoJobScheduler : IJobScheduler
         }
         else
         {
-            throw new InvalidOperationException($"{recordingId}: {result}");
+            throw new InvalidOperationException($"JobSystemArgs={args}: {result}");
         }
     }
 }
