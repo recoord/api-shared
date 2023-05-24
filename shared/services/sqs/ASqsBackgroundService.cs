@@ -12,6 +12,7 @@ public abstract class ASqsBackgroundService : BackgroundService
     private int _sqsCoolDownWaitTimeInSeconds;
     protected readonly int _maxMessageRetries;
     private readonly int _queueTtl;
+    protected readonly int _maxTimeoutSeconds;
 
     public ASqsBackgroundService(
         string serviceName,
@@ -26,6 +27,7 @@ public abstract class ASqsBackgroundService : BackgroundService
         _sqsCoolDownWaitTimeInSeconds = 1;
         _maxMessageRetries = int.Parse(Environment.GetEnvironmentVariable("MAX_SQS_MESSAGE_RETRIES") ?? "3");
         _queueTtl = int.Parse(Environment.GetEnvironmentVariable("SQS_TTL") ?? "3");
+        _maxTimeoutSeconds = int.Parse(Environment.GetEnvironmentVariable("MAX_TIMEOUT_SECONDS") ?? "10800");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -55,13 +57,12 @@ public abstract class ASqsBackgroundService : BackgroundService
                     {
                         _logger.LogInformation(message.Body);
                         messageReceiptHandle = message.ReceiptHandle;
-                        int.TryParse(message.Attributes.GetValueOrDefault("ApproximateReceiveCount", "1"), out int previousDeliveries);
 
-                        var response = await this.HandleMessageAsync(message, previousDeliveries);
+                        var response = await this.HandleMessageAsync(message);
 
-                        if (response == ESqsMessageHandlerResponse.Retry)
+                        if (response.Result == ESqsMessageHandlerResult.Retry)
                         {
-                            int waitTime = _queueTtl + 5 * (previousDeliveries - 1);
+                            int waitTime = Math.Min(_queueTtl + (int)Math.Pow(2, response.Retries), _maxTimeoutSeconds);
                             await _sqs.ChangeMessageVisibilityAsync(_sqsQueueUrl, message.ReceiptHandle, waitTime);
                             _logger.LogWarning($"Will retry the message again in {waitTime} seconds. Moving to the next message.");
 
@@ -97,7 +98,7 @@ public abstract class ASqsBackgroundService : BackgroundService
         }
     }
 
-    protected abstract Task<ESqsMessageHandlerResponse> HandleMessageAsync(Message message, int previousDeliveries);
+    protected abstract Task<SqsMessageHandlerResponse> HandleMessageAsync(Message message);
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {

@@ -68,7 +68,7 @@ public class ErrorHandlerMiddleware
 
             // Serialize return object into response body
             var responseBody = JsonSerializer.Serialize(responseProblemDetails, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            _logger.LogInformation($"responseBody={responseBody}");
+            _logger.LogError($"responseBody={responseBody}");
 
             await response.WriteAsync(responseBody);
         }
