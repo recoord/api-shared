@@ -61,17 +61,24 @@ public class ArgoJobScheduler : IJobScheduler
             AwsCredentials = jobCreateRequest.AwsCredentials
         };
 
-        var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync(_jobsApiUrl, data);
-        var result = response.Content.ReadAsStringAsync().Result;
+        try
+        {
+            var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(_jobsApiUrl, data);
+            var result = response.Content.ReadAsStringAsync().Result;
 
-        if (response.StatusCode.IsSuccessStatusCode())
-        {
-            return JsonSerializer.Deserialize<JobCreateResponseV1>(result, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
+            if (response.StatusCode.IsSuccessStatusCode())
+            {
+                return JsonSerializer.Deserialize<JobCreateResponseV1>(result, new JsonSerializerOptions(JsonSerializerDefaults.Web))!;
+            }
+            else
+            {
+                return new JobCreateResponseV1();
+            }
         }
-        else
+        catch (Exception)
         {
-            throw new InvalidOperationException($"JobSystemArgs={args}: {result}");
+            return new JobCreateResponseV1();
         }
     }
 }
