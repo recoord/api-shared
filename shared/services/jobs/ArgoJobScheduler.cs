@@ -10,10 +10,12 @@ public class ArgoJobScheduler : IJobScheduler
     private readonly string _argoSubmitUrl;
     private readonly string _argoToken;
     private readonly Uri _jobsApiUrl;
+    private readonly ILogger _logger;
 
-    public ArgoJobScheduler(HttpClient httpClient)
+    public ArgoJobScheduler(HttpClient httpClient, ILogger<ArgoJobScheduler> logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
         var url = Environment.GetEnvironmentVariable("JOBS_API_URL") ?? "https://localhost:7141/jobs/v1";
         _jobsApiUrl = new Uri(url);
         _httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
@@ -73,11 +75,13 @@ public class ArgoJobScheduler : IJobScheduler
             }
             else
             {
+                _logger.LogWarning($"Could not create argo job: request={JsonSerializer.Serialize(body)} statusCode={response.StatusCode}, result={result}");
                 return new JobCreateResponseV1();
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            _logger.LogWarning($"Error creating argo job: request={JsonSerializer.Serialize(body)}, error={e.ToString()}");
             return new JobCreateResponseV1();
         }
     }
