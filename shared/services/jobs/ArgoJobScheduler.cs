@@ -104,7 +104,7 @@ public class ArgoJobScheduler : IJobScheduler
         };
         var body = JsonSerializer.Serialize(argoArgs);
 
-        var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+        var data = new StringContent(body, Encoding.UTF8, "application/json");
         var request = new HttpRequestMessage()
         {
             RequestUri = new Uri(_argoSubmitUrl),
