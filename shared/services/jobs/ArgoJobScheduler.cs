@@ -9,6 +9,7 @@ public class ArgoJobScheduler : IJobScheduler
     private readonly HttpClient _httpClient;
     private readonly string _argoSubmitUrl;
     private readonly string _argoToken;
+    private readonly string _argoAuthHeader;
     private readonly Uri _jobsApiUrl;
     private readonly ILogger _logger;
 
@@ -27,6 +28,7 @@ public class ArgoJobScheduler : IJobScheduler
         _httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, $"Basic {base64EncodedAuthenticationString}");
         _argoSubmitUrl = Environment.GetEnvironmentVariable("ARGO_SUBMIT_URL")!;
         _argoToken = Environment.GetEnvironmentVariable("ARGO_TOKEN")!;
+        _argoAuthHeader = Environment.GetEnvironmentVariable("ARGO_AUTH_HEADER") ?? "Bearer";
     }
 
     public async Task<JobCreateResponseV1> JobCreateAsync(ArgoJobCreateRequestV1 jobCreateRequest, string jobKind)
@@ -58,6 +60,7 @@ public class ArgoJobScheduler : IJobScheduler
             Synchronized = jobCreateRequest.Synchronized,
             SystemAuth = new SystemAuthV1
             {
+                Header = _argoAuthHeader,
                 Token = _argoToken
             },
             AwsCredentials = jobCreateRequest.AwsCredentials
