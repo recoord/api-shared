@@ -63,8 +63,17 @@ public abstract class ASqsBackgroundService : BackgroundService
                         if (response.Result == ESqsMessageHandlerResult.Retry)
                         {
                             int waitTime = Math.Min(_queueTtl + (int)Math.Pow(2, response.Retries), _maxTimeoutSeconds);
-                            await _sqs.ChangeMessageVisibilityAsync(_sqsQueueUrl, message.ReceiptHandle, waitTime);
-                            _logger.LogWarning($"Will retry the message again in {waitTime} seconds. Moving to the next message.");
+
+                            if (waitTime > 0 && waitTime <= 43200)
+                            {
+                                await _sqs.ChangeMessageVisibilityAsync(_sqsQueueUrl, message.ReceiptHandle, waitTime);
+                                _logger.LogWarning($"Will retry the message again in {waitTime} seconds. Moving to the next message.");
+                            }
+                            else
+                            {
+                                _logger.LogWarning($"Invalid wait time: {waitTime} seconds. Deleting message.");
+                                await _sqs.DeleteMessageAsync(_sqsQueueUrl, message.ReceiptHandle);
+                            }
 
                             // Don't delete message but retry later
                             messageReceiptHandle = "";
