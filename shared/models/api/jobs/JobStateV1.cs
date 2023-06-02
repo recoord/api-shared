@@ -14,5 +14,6 @@ public enum JobStateV1
     Failed = 4,
     Completed = 5,
     TimedOut = 6,
-    NoSignal = 7
+    NoSignal = 7,
+    MaxRetriesReached = 8
 }
