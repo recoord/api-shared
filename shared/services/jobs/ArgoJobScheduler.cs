@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
@@ -87,5 +88,34 @@ public class ArgoJobScheduler : IJobScheduler
             _logger.LogWarning($"Error creating argo job: request={JsonSerializer.Serialize(body)}, error={e.ToString()}");
             return new JobCreateResponseV1();
         }
+    }
+
+    public async Task<IResult> JobRerunAsync(ArgoJobCreateRequestV1 jobCreateRequest)
+    {
+        var argoArgs = new ArgoWorkflowArgsV1
+        {
+            Namespace = "processing-argo",
+            resourceKind = "WorkflowTemplate",
+            resourceName = jobCreateRequest.WorkflowName,
+            submitOptions = new SubmitOptions
+            {
+                parameters = jobCreateRequest.JobInputs
+            }
+        };
+        var body = JsonSerializer.Serialize(argoArgs);
+
+        var data = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage()
+        {
+            RequestUri = new Uri(_argoSubmitUrl),
+            Method = HttpMethod.Post,
+            Content = data
+        };
+        request.Headers.Add(HeaderNames.Accept, "application/json");
+        request.Headers.Add(HeaderNames.Authorization, $"{_argoAuthHeader} {_argoToken}");
+        var response = await _httpClient.SendAsync(request);
+        var result = response.Content.ReadAsStringAsync().Result;
+
+        return Results.Ok(result);
     }
 }

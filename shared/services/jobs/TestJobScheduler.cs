@@ -2,6 +2,7 @@ using System.Text.Json;
 using Amazon.Lambda.CloudWatchEvents;
 using Amazon.SQS;
 using Amazon.SQS.Model;
+using Microsoft.AspNetCore.Http;
 
 public class TestJobScheduler : IJobScheduler
 {
@@ -47,5 +48,11 @@ public class TestJobScheduler : IJobScheduler
                 JobState = JobStateV1.Completed
             }
         };
+    }
+
+    public async Task<IResult> JobRerunAsync(ArgoJobCreateRequestV1 jobCreateRequest)
+    {
+        await Task.CompletedTask;
+        return Results.Ok();
     }
 }
