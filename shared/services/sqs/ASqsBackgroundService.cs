@@ -10,9 +10,9 @@ public abstract class ASqsBackgroundService : BackgroundService
     private readonly IAmazonSQS _sqs;
     private readonly string _sqsQueueUrl;
     private int _sqsCoolDownWaitTimeInSeconds;
-    protected readonly int _maxMessageRetries;
-    private readonly int _queueTtl;
-    protected readonly int _maxTimeoutSeconds;
+    protected readonly double _maxMessageRetries;
+    private readonly double _queueTtl;
+    protected readonly double _maxTimeoutSeconds;
 
     public ASqsBackgroundService(
         string serviceName,
@@ -25,9 +25,9 @@ public abstract class ASqsBackgroundService : BackgroundService
         _sqs = sqs;
         _sqsQueueUrl = sqsQueueUrl;
         _sqsCoolDownWaitTimeInSeconds = 1;
-        _maxMessageRetries = int.Parse(Environment.GetEnvironmentVariable("MAX_SQS_MESSAGE_RETRIES") ?? "3");
-        _queueTtl = int.Parse(Environment.GetEnvironmentVariable("SQS_TTL") ?? "3");
-        _maxTimeoutSeconds = int.Parse(Environment.GetEnvironmentVariable("MAX_TIMEOUT_SECONDS") ?? "10800");
+        _maxMessageRetries = double.Parse(Environment.GetEnvironmentVariable("MAX_SQS_MESSAGE_RETRIES") ?? "3");
+        _queueTtl = double.Parse(Environment.GetEnvironmentVariable("SQS_TTL") ?? "3");
+        _maxTimeoutSeconds = double.Parse(Environment.GetEnvironmentVariable("MAX_TIMEOUT_SECONDS") ?? "10800");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -62,11 +62,11 @@ public abstract class ASqsBackgroundService : BackgroundService
 
                         if (response.Result == ESqsMessageHandlerResult.Retry)
                         {
-                            int waitTime = Math.Min(_queueTtl + (int)Math.Pow(2, response.Retries), _maxTimeoutSeconds);
+                            var waitTime = Math.Min(_queueTtl + Math.Pow(2, response.Retries), _maxTimeoutSeconds);
 
                             if (waitTime > 0 && waitTime <= 43200)
                             {
-                                await _sqs.ChangeMessageVisibilityAsync(_sqsQueueUrl, message.ReceiptHandle, waitTime);
+                                await _sqs.ChangeMessageVisibilityAsync(_sqsQueueUrl, message.ReceiptHandle, (int)waitTime);
                                 _logger.LogWarning($"Will retry the message again in {waitTime} seconds. Moving to the next message.");
                             }
                             else
