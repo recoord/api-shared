@@ -49,10 +49,4 @@ public class TestJobScheduler : IJobScheduler
             }
         };
     }
-
-    public async Task<IResult> JobRerunAsync(ArgoJobCreateRequestV1 jobCreateRequest)
-    {
-        await Task.CompletedTask;
-        return Results.Ok();
-    }
 }
