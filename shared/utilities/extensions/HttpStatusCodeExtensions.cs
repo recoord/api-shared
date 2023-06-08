@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using System.Net;
 
 public static class HttpStatusCodeExtensions

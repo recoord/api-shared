@@ -1,3 +1,5 @@
+namespace Api.Shared.Tests;
+
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Xunit;

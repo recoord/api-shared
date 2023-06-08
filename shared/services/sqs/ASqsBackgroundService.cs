@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Hosting;

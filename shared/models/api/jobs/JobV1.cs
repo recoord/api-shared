@@ -1,4 +1,5 @@
-using System.ComponentModel.DataAnnotations;
+namespace Api.Shared;
+
 using Swashbuckle.AspNetCore.Annotations;
 
 [SwaggerSchema(Description = "The job definition")]

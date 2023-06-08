@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public static class EventBridgeConstants
 {
     #region Detail types

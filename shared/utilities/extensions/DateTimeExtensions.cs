@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public static class DateTimeExtensions
 {
     public static string ToUniversalIso8601(this DateTime dateTime)

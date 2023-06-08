@@ -1,7 +1,9 @@
+namespace Api.Shared;
+
 using System.ComponentModel.DataAnnotations;
 
 [AttributeUsage(
-    AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, 
+    AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter,
     AllowMultiple = false)]
 public class NotEmptyGuidAttribute : ValidationAttribute
 {

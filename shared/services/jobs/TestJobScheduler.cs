@@ -1,8 +1,9 @@
 using System.Text.Json;
+namespace Api.Shared;
+
 using Amazon.Lambda.CloudWatchEvents;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using Microsoft.AspNetCore.Http;
 
 public class TestJobScheduler : IJobScheduler
 {

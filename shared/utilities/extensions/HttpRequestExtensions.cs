@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public static class HttpRequestExtensions
 {
     private const string TimeoutPropertyKey = "RequestTimeout";

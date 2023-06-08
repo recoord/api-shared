@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public static class StringHelper
 {
     public static string GetErrorsAsString(IDictionary<string, string[]> errors)

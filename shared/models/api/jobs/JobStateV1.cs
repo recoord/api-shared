@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 using Swashbuckle.AspNetCore.Annotations;

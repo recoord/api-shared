@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public static class UrlHelper
 {
     public static string? GenerateS3Uri(string? bucket, string? key)

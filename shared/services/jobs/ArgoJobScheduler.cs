@@ -1,7 +1,7 @@
-using System.Net;
+namespace Api.Shared;
+
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 

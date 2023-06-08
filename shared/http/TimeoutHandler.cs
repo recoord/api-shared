@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public class TimeoutHandler : DelegatingHandler
 {
     public TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromSeconds(100);

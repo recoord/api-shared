@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prometheus;

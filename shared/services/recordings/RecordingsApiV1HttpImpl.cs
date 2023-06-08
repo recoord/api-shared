@@ -1,5 +1,5 @@
-using System.Net;
-using System.Text;
+namespace Api.Shared;
+
 using System.Text.Json;
 using Microsoft.Net.Http.Headers;
 

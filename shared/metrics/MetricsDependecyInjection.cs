@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using Microsoft.Extensions.DependencyInjection;
 using Prometheus;
 

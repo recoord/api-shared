@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using System.ComponentModel.DataAnnotations;
 
 public record SystemAuthV1

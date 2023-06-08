@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public record ArgoJobCreateRequestV1
 {
     public string WorkflowName { get; init; } = "";

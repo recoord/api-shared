@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public abstract class PagedResultBase
 {
     public int CurrentPage { get; set; }

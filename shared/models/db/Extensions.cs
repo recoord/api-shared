@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using Microsoft.EntityFrameworkCore;
 
 public static class DbExtensions

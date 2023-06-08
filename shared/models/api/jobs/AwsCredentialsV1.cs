@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public record AwsCredentialsV1
 {
     public string AccessKeyId { get; init; } = "";

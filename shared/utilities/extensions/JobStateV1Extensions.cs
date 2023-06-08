@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public static class JobStateExtensions
 {
     public static bool IsEndState(this JobStateV1 jobState)

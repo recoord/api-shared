@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public class TestRecordingsApi : IRecordingsApiV1
 {
     public TestRecordingsApi(HttpClient httpClient)

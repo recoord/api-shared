@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public static class DictionaryExtensions
 {
     public static TValue GetValueOrDefault<TKey, TValue>(

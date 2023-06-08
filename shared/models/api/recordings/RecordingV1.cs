@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using Swashbuckle.AspNetCore.Annotations;
 
 [SwaggerSchema(Description = "The recording definition")]

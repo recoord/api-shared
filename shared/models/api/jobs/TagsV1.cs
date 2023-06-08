@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using System.Text.Json.Serialization;
 
 public record TagsV1

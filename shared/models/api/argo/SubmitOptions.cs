@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using System.Diagnostics.CodeAnalysis;
 using Swashbuckle.AspNetCore.Annotations;
 

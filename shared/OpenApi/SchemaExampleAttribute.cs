@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 [AttributeUsage(
     AttributeTargets.Class |
     AttributeTargets.Struct |

@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 public record SqsMessageHandlerResponse
 {
     public int Retries { get; set; }

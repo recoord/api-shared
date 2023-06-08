@@ -1,3 +1,5 @@
+namespace Api.Shared;
+
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -6,7 +8,7 @@ public class SchemaFilter : ISchemaFilter
 {
     public void Apply(OpenApiSchema schema, SchemaFilterContext context)
     {
-        if(context.MemberInfo != null)
+        if (context.MemberInfo != null)
         {
             var schemaAttribute = context.MemberInfo.GetCustomAttributes<SwaggerSchemaExampleAttribute>()
             .FirstOrDefault();
@@ -15,25 +17,25 @@ public class SchemaFilter : ISchemaFilter
         }
     }
 
-        private void ApplySchemaAttribute(OpenApiSchema schema, SwaggerSchemaExampleAttribute schemaAttribute)
+    private void ApplySchemaAttribute(OpenApiSchema schema, SwaggerSchemaExampleAttribute schemaAttribute)
+    {
+        if (schemaAttribute.Example != null)
         {
-            if (schemaAttribute.Example != null)
+            switch (schemaAttribute.Example.GetType())
             {
-                switch( schemaAttribute.Example.GetType() )
-                {
-                    case Type stringType when stringType == typeof(string):
-                        schema.Example = new Microsoft.OpenApi.Any.OpenApiString(schemaAttribute.Example.ToString());
+                case Type stringType when stringType == typeof(string):
+                    schema.Example = new Microsoft.OpenApi.Any.OpenApiString(schemaAttribute.Example.ToString());
                     break;
-                    case Type stringArrayType when stringArrayType == typeof(string[]):
-                        var array = new Microsoft.OpenApi.Any.OpenApiArray();
-                        var elements = schemaAttribute.Example as string[] ?? new string[] {""};
-                        foreach (string element in elements)
-                        {
-                            array.Add(new Microsoft.OpenApi.Any.OpenApiString(element));
-                        }
-                        schema.Enum = array;
+                case Type stringArrayType when stringArrayType == typeof(string[]):
+                    var array = new Microsoft.OpenApi.Any.OpenApiArray();
+                    var elements = schemaAttribute.Example as string[] ?? new string[] { "" };
+                    foreach (string element in elements)
+                    {
+                        array.Add(new Microsoft.OpenApi.Any.OpenApiString(element));
+                    }
+                    schema.Enum = array;
                     break;
-                }
             }
         }
     }
+}
