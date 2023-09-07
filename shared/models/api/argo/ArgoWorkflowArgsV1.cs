@@ -10,13 +10,13 @@ public class ArgoWorkflowArgsV1
 {
     [SwaggerSchemaExample("processing-argo")]
     [JsonPropertyName("namespace")]
-    public string? Namespace { get; set; }
+    public string Namespace { get; set; } = "processing-argo";
 
     [SwaggerSchemaExample("WorkflowTemplate")]
-    public string? resourceKind { get; set; }
+    public string ResourceKind { get; set; } = "WorkflowTemplate";
 
     [SwaggerSchemaExample("stacked-rendering")]
-    public string? resourceName { get; set; }
+    public string ResourceName { get; set; } = "";
 
-    public SubmitOptions? submitOptions { get; set; }
+    public SubmitOptions SubmitOptions { get; set; } = new SubmitOptions();
 }

@@ -24,7 +24,7 @@ public class ArgoJobScheduler : IJobScheduler
         var username = Environment.GetEnvironmentVariable("API_USERNAME")!;
         var password = Environment.GetEnvironmentVariable("API_PASSWORD")!;
         var authenticationString = $"{username}:{password}";
-        var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.UTF8.GetBytes(authenticationString));
+        var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.UTF8.GetBytes(authenticationString));
         _httpClient.DefaultRequestHeaders.Remove(HeaderNames.Authorization);
         _httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, $"Basic {base64EncodedAuthenticationString}");
         _argoSubmitUrl = Environment.GetEnvironmentVariable("ARGO_SUBMIT_URL")!;
@@ -37,14 +37,14 @@ public class ArgoJobScheduler : IJobScheduler
         var argoArgs = new ArgoWorkflowArgsV1
         {
             Namespace = "processing-argo",
-            resourceKind = "WorkflowTemplate",
-            resourceName = jobCreateRequest.WorkflowName,
-            submitOptions = new SubmitOptions
+            ResourceKind = "WorkflowTemplate",
+            ResourceName = jobCreateRequest.WorkflowName,
+            SubmitOptions = new SubmitOptions
             {
-                parameters = jobCreateRequest.JobInputs
+                Parameters = jobCreateRequest.JobInputs
             }
         };
-        var args = JsonSerializer.Serialize(argoArgs);
+        var args = JsonSerializer.Serialize(argoArgs, new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
         var body = new JobCreateRequestV1
         {
