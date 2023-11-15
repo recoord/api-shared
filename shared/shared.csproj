@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.CloudWatchEvents" Version="4.3.0" />
     <PackageReference Include="AWSSDK.SQS" Version="3.7.200.37" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="MinimalApis.Extensions" Version="0.11" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
